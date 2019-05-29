@@ -70,7 +70,7 @@ ax.barh(np.arange(len(action_seqs)), reward_seqs, align='center', alpha=0.5)
 ax.set_yticklabels(action_seqs)
 ax.set_title('Average Reward for Each Policy')
 
-ax2.hist(reward_seqs, bins=3)
+# ax2.hist(reward_seqs, bins=3)
 ax2.hist(reward_seqs, bins='auto')
 ax2.set_title('Average Reward Distribution, $|r_M-r_m|$={:<2.2f}'.format(np.max(reward_seqs)-np.min(reward_seqs)))
 
