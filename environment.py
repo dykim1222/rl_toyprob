@@ -7,7 +7,7 @@ class StepsEnv():
         self.T = num_actions
         self.debug = debug
         self.x0 = x0
-        self.theta = None
+        self.theta = npr.rand()
         self.x = None
         self.time = None
         self.done = False
@@ -41,8 +41,6 @@ class StepsEnv():
     def reset(self):
         if self.debug:
             print('Resetting the environment.')
-        self.theta = npr.rand()
-        # self.x = np.around(npr.rand())
         self.x = np.copy(self.x0)
         self.time = 0
         self.done = False
