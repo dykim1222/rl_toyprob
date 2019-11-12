@@ -9,10 +9,10 @@ import argparse
 ################################################################################
 npr.seed(12345)
 parser = argparse.ArgumentParser()
-parser.add_argument('--T', nargs='?', const=1, type=int, default=2) # Horizon Length
+parser.add_argument('--T', nargs='?', const=1, type=int, default=3) # Horizon Length
 parser.add_argument('--x0', nargs='?', const=1, type=int, default=1) # Starting state
 parser.add_argument('--markov_feedback', nargs='?', const=1, type=int, default=1) # Action dependency markovness
-parser.add_argument('--num_episodes', nargs='?', const=1, type=int, default=1000) # Number of episodes
+parser.add_argument('--num_episodes', nargs='?', const=1, type=int, default=100) # Number of episodes
 parser.add_argument('--num_thetas', nargs='?', const=1, type=int, default=100) # Number of trials for theta
 parser.add_argument('--debug', nargs='?', const=1, type=int, default=0) # Debugging mode
 args = parser.parse_args()
@@ -39,10 +39,14 @@ for i in range(action_seqs.shape[0]):
     act = dec_to_action_seq(i)
     action_seqs[i, -len(act):] = np.copy(act)
 
-reward_seqs = np.zeros(action_seqs.shape[0])
+result_arr = np.zeros((num_thetas, action_seqs.shape[0]))
+theta_seq = np.zeros(num_thetas)
 
-for _ in range(int(num_thetas)):
-    env = StepsEnv(T, x0, debug)
+for idx_theta in range(int(num_thetas)):
+    theta = npr.rand()
+    theta_seq[idx_theta] = theta
+    env = StepsEnv(T, theta, x0, debug)
+
     for idx, action_seq in enumerate(action_seqs):
         for _ in range(int(num_episodes)):
             env.reset()
@@ -62,8 +66,9 @@ for _ in range(int(num_thetas)):
                 obs, reward, done = env.step(action)
 
                 if done:
-                    reward_seqs[idx] += reward
+                    result_arr[idx_theta, idx] += reward
 
+reward_seqs = result_arr.sum(0)
 reward_seqs /= num_episodes*num_thetas
 
 f = plt.figure(figsize=(30,10))

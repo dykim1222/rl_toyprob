@@ -3,11 +3,11 @@ import numpy.random as npr
 
 class StepsEnv():
 
-    def __init__(self, num_actions, x0 = 1, debug = False):
+    def __init__(self, num_actions, theta, x0 = 1, debug = False):
         self.T = num_actions
         self.debug = debug
         self.x0 = x0
-        self.theta = npr.rand()
+        self.theta = theta
         self.x = None
         self.time = None
         self.done = False
