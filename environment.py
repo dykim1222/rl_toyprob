@@ -20,13 +20,13 @@ class StepsEnv():
 
         old_x = np.copy(self.x)
         if action == 0:
-            self.x = 1-self.x if w < self.theta else self.x
+            self.x = 1-self.x if w < self.theta[0] else self.x
             if self.debug:
-                print('prev_state={}, action={}, curr_state={}, theta={:<2.2f}, w={:<2.2f}'.format(old_x.item(), action, self.x.item(), self.theta, w))
+                print('prev_state={}, action={}, curr_state={}, theta_0={:<2.2f}, w={:<2.2f}'.format(old_x.item(), action, self.x.item(), self.theta[0], w))
         else:
-            self.x = 1-self.x if w >= self.theta else self.x
+            self.x = 1-self.x if w >= self.theta[1] else self.x
             if self.debug:
-                print('prev_state={}, action={}, curr_state={}, theta={:<2.2f}, w={:<2.2f}'.format(old_x.item(), action, self.x.item(), self.theta, w))
+                print('prev_state={}, action={}, curr_state={}, theta_1={:<2.2f}, w={:<2.2f}'.format(old_x.item(), action, self.x.item(), self.theta[1], w))
 
         self.time += 1
 
