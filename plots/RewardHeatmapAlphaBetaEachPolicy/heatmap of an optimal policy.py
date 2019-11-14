@@ -9,10 +9,10 @@ import argparse
 ################################################################################
 npr.seed(12345)
 parser = argparse.ArgumentParser()
-parser.add_argument('--T', nargs='?', const=1, type=int, default=2) # Horizon Length
+parser.add_argument('--T', nargs='?', const=1, type=int, default=3) # Horizon Length
 parser.add_argument('--x0', nargs='?', const=1, type=int, default=1) # Starting state
 parser.add_argument('--markov_feedback', nargs='?', const=1, type=int, default=0) # Action dependency markovness
-parser.add_argument('--num_episodes', nargs='?', const=1, type=int, default=2000) # Number of episodes
+parser.add_argument('--num_episodes', nargs='?', const=1, type=int, default=10000) # Number of episodes
 parser.add_argument('--num_thetas', nargs='?', const=1, type=int, default=121) # Number of trials for theta
 parser.add_argument('--debug', nargs='?', const=1, type=int, default=0) # Debugging mode
 args = parser.parse_args()
@@ -40,9 +40,16 @@ for i in range(action_seqs.shape[0]):
     action_seqs[i, -len(act):] = np.copy(act)
 
 # pdb.set_trace()
-# optimal policies:? 000 111
-action_seqs=np.array([[0,0,0]])
-action_seqs=np.array([[1,1,1]])
+# optimal policies index: 0, 7
+# index_opt_policy = [0,7]
+# action_seqs = actions_seqs[index_opt_policy]
+
+#optimal policy index: 4, 6, 12, 14, 22, 23, 30,31,32,34,36,38
+#                        50, 51, 54,55,72,73,76,77,89, 91,93,95,96,
+#                        97,104,105,113, 115, 121,123,
+# index_opt_policy = [4, 6, 12, 14, 22, 23, 30, 31, 32, 34, 36, 38, 50, 51, 54, 55,
+#             72, 73, 76, 77, 89, 91, 93, 95, 96, 97, 104, 105, 113, 115, 121, 123]
+# action_seqs=actions_seqs[index_opt_policy]
 
 result_arr = np.zeros((num_thetas, action_seqs.shape[0]))
 # theta_seq = np.zeros((num_thetas, num_states))
@@ -77,7 +84,10 @@ for idx_theta in range(int(num_thetas)):
                 if done:
                     result_arr[idx_theta, idx] += reward
 
+
 # pdb.set_trace()
+
+
 # dealing with one optimal policy
 result_arr = (result_arr/num_episodes).reshape(len(alpha), len(alpha))
 plt.imshow(result_arr,cmap='hot')
@@ -85,6 +95,7 @@ plt.colorbar()
 plt.ylabel('beta')
 plt.xlabel('alpha')
 plt.gca().invert_yaxis()
+plt.savefig('heatmap{}.png'.format("".join([str(int(x)) for x in action_seq])))
 plt.show()
 
 pdb.set_trace()
