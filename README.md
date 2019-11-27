@@ -11,5 +11,9 @@
 
 ### 11/27/2019
 * Brute-force search for the optimal policies.
-* Bayesian update rule for 
-* Extend the state space 
+* Given a prior on theta, update posterior after every transition (s,a,s',r) by Bayes' Rule.
+* At some point an optimal policy starts more exploiting and less exploring!
+* Work with the extended state space S^ = (S, p) where p is the agent's posterior belief on theta.
+* Write equation similar to Bellman equation in dynamic programming (DP).
+* Assuming the equation holds, solve by DP.
+* The optimal policy agrees.
